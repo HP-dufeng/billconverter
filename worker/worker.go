@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -13,28 +14,30 @@ import (
 	"github.com/fengdu/billconverter/output"
 )
 
-var waitGroup sync.WaitGroup
-
 // Start get files form src, then write csv to destination
 func Start(src, destination string) {
 	os.RemoveAll(destination)
+	os.MkdirAll(destination, 0755)
 
 	files, err := ioutil.ReadDir(src)
 	if err != nil {
 		log.Fatalln("ERROR: ReadDir: ", err)
 	}
 
+	var waitGroup sync.WaitGroup
+
 	waitGroup.Add(len(files))
 
 	for _, f := range files {
 		go func(f os.FileInfo) {
 			defer waitGroup.Done()
-			if !f.IsDir() {
+			if !f.IsDir() && strings.HasSuffix(f.Name(), ".txt") {
 				_, err := process(f.Name(), src, destination)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
 				}
+				fmt.Printf("INFO: %s convert successed.\n", f.Name())
 			}
 
 		}(f)
@@ -65,7 +68,7 @@ func process(filename, src, destination string) (string, error) {
 	destFilename := fmt.Sprintf("%s_WANDA_SHTrades_%s_%s.csv", accountNo, shortT, longT)
 	filepath := destination + "/" + destFilename
 	if err := output.Write(filepath, tradeConfirmation); err != nil {
-		return "", fmt.Errorf("ERROR: write: tradeConfirmation")
+		return "", fmt.Errorf("ERROR: write: tradeConfirmation: %s", filename)
 	}
 
 	return filepath, nil

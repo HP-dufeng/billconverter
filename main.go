@@ -1,10 +1,26 @@
+// Convert bill txt files into csv format
+// The core logic is in this file: worker.go
+// Logic Description:
+// 		input ==> convert ==> output
+// input: read all bill files from src folder
+// convert: extract the segments of [Trade Confirmation] ...
+// output: write segments into csv file
 package main
 
-import "github.com/fengdu/billconverter/worker"
+import (
+	"flag"
+	"fmt"
 
-var src = "./src"
-var destination = "./dst"
+	"github.com/fengdu/billconverter/worker"
+)
 
 func main() {
-	worker.Start(src, destination)
+	src := flag.String("src", "./src", "src folder")
+	destination := flag.String("dst", "./dst", "dst folder")
+
+	flag.Parse()
+	fmt.Printf("Src folder: %s\n", *src)
+	fmt.Printf("Destination folder: %s\n", *destination)
+
+	worker.Start(*src, *destination)
 }

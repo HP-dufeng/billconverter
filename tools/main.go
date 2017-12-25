@@ -1,9 +1,9 @@
-package worker
+package main
 
 import (
+	"fmt"
 	"os"
-	"strings"
-	"testing"
+	"strconv"
 
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/transform"
@@ -15,7 +15,7 @@ func init() {
 	content = `|                                                                        -----Statements Bill----                                                                        
 	|                                                                      -----My NAME IS CHANGE-----                                                                       
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	|Account No：61188803                                                      Statement Date：2017-12-12 to 2017-12-12
+	|Account No：%d                                                      Statement Date：2017-12-12 to 2017-12-12
 	|Account Name：邦吉（上海）谷物三部                                        Bill Date：2017-12-13
 	|Account Type：Sub Account                                                 
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -154,28 +154,27 @@ func init() {
 
 }
 
-func TestProcess(t *testing.T) {
-	src := "./"
-	destination := "./"
-	filename := "_test.txt"
-	filepath := src + "/" + filename
+func main() {
+	no := 61188800
 
-	f, _ := os.Create(filepath)
-	defer f.Close()
-	defer os.Remove(filepath)
-	ts := simplifiedchinese.GBK.NewEncoder()
-	w := transform.NewWriter(f, ts)
-	w.Write([]byte(content))
+	src := "../src"
 
-	s, _ := process(filename, src, destination)
-	defer os.Remove(destination + "/" + s)
+	for i := 1; i <= 1000; i++ {
+		no++
+		filename := strconv.Itoa(no) + ".txt"
+		filecontent := fmt.Sprintf(content, no)
 
-	if len(s) <= 0 {
-		t.Errorf("Expected csv file created, but not")
+		filepath := src + "/" + filename
+		f, _ := os.Create(filepath)
+		defer f.Close()
+		ts := simplifiedchinese.GBK.NewEncoder()
+		w := transform.NewWriter(f, ts)
+		w.Write([]byte(filecontent))
+
+		// err := ioutil.WriteFile(filepath, []byte(filecontent), 0644)
+		// if err != nil {
+		// 	fmt.Println(err)
+		// 	os.Exit(1)
+		// }
 	}
-
-	if !strings.Contains(s, "61188803") {
-		t.Errorf("Expected csv file name contains '61188803', but not")
-	}
-
 }

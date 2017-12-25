@@ -1,23 +1,9 @@
-package worker
-
-import (
-	"os"
-	"strings"
-	"testing"
-
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"golang.org/x/text/transform"
-)
-
-var content string
-
-func init() {
-	content = `|                                                                        -----Statements Bill----                                                                        
+|                                                                        -----Statements Bill----                                                                        
 	|                                                                      -----My NAME IS CHANGE-----                                                                       
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	|Account NoÔºö61188803                                                      Statement DateÔºö2017-12-12 to 2017-12-12
-	|Account NameÔºöÈÇ¶ÂêâÔºà‰∏äÊµ∑ÔºâË∞∑Áâ©‰∏âÈÉ®                                        Bill DateÔºö2017-12-13
-	|Account TypeÔºöSub Account                                                 
+	|Account No£∫61188801                                                      Statement Date£∫2017-12-12 to 2017-12-12
+	|Account Name£∫∞Óº™£®…œ∫££©π»ŒÔ»˝≤ø                                        Bill Date£∫2017-12-13
+	|Account Type£∫Sub Account                                                 
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	|                                                                          Journal Description                                                                           
 	|   Date   |     Cash In      |     Cash Out       |   Type   |Currency|Remarks |
@@ -150,32 +136,4 @@ func init() {
 	|Excess            |      1,254,233.00|      1,254,233.00|                  |                  |                  |                  |                  
 	|Account           |              0.00|              0.00|                  |                  |                  |                  |                  
 	----------------
-	`
-
-}
-
-func TestProcess(t *testing.T) {
-	src := "./"
-	destination := "./"
-	filename := "_test.txt"
-	filepath := src + "/" + filename
-
-	f, _ := os.Create(filepath)
-	defer f.Close()
-	defer os.Remove(filepath)
-	ts := simplifiedchinese.GBK.NewEncoder()
-	w := transform.NewWriter(f, ts)
-	w.Write([]byte(content))
-
-	s, _ := process(filename, src, destination)
-	defer os.Remove(destination + "/" + s)
-
-	if len(s) <= 0 {
-		t.Errorf("Expected csv file created, but not")
-	}
-
-	if !strings.Contains(s, "61188803") {
-		t.Errorf("Expected csv file name contains '61188803', but not")
-	}
-
-}
+	
