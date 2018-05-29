@@ -161,3 +161,37 @@ func TestParseSegment(t *testing.T) {
 		t.Errorf("Expected segment contains 'Financial Situation', but not")
 	}
 }
+
+func TestParseMonthAndYear(t *testing.T) {
+	var month, year string
+
+	month, year, _ = ParseMonthAndYear("1812")
+	if month != "12" {
+		t.Errorf("Expected month parse from '1812' equal 12, but got %v ", month)
+	}
+	if year != "2018" {
+		t.Errorf("Expected year parse from '1812' equal 2018, but got %v ", year)
+	}
+
+	month, year, _ = ParseMonthAndYear("0812")
+	if month != "12" {
+		t.Errorf("Expected month parse from '0812' equal 12, but got %v ", month)
+	}
+	if year != "2008" {
+		t.Errorf("Expected year parse from '0812' equal 2008, but got %v ", year)
+	}
+
+	month, year, _ = ParseMonthAndYear("812")
+	if month != "12" {
+		t.Errorf("Expected month parse from '812' equal 12, but got %v ", month)
+	}
+	if year != "2018" {
+		t.Errorf("Expected year parse from '812' equal 2018, but got %v ", year)
+	}
+
+	var err error
+	_, _, err = ParseMonthAndYear("66666")
+	if err == nil {
+		t.Errorf("Expected parse from '66666' throw error, but not")
+	}
+}

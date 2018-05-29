@@ -148,8 +148,8 @@ func init() {
 
 }
 
-func TestGetBillBaseInfo(t *testing.T) {
-	m, _ := GetBillBaseInfo(content)
+func TestReadHeadSegment(t *testing.T) {
+	m, _ := readHeadSegment(content)
 
 	if len(m) <= 0 {
 		t.Errorf("Expected billinfo length greater than 0, but not")
@@ -158,12 +158,18 @@ func TestGetBillBaseInfo(t *testing.T) {
 	if _, ok := m["Account No"]; !ok {
 		t.Errorf("Expected billinfo contains [Account No], but not")
 	}
-}
 
-func TestGetTradeConfirmation(t *testing.T) {
-	m := GetTradeConfirmation(content)
-
-	if len(m) != 9 {
-		t.Errorf("Expected records length equal to 9, but got %v", len(m))
+	if _, ok := m["Bill Date"]; !ok {
+		t.Errorf("Expected billinfo contains [Bill Date], but not")
 	}
+
+	
 }
+
+// func TestGetTradeConfirmation(t *testing.T) {
+// 	m := GetTradeConfirmation(content)
+
+// 	if len(m) != 9 {
+// 		t.Errorf("Expected records length equal to 9, but got %v", len(m))
+// 	}
+// }

@@ -1,0 +1,7 @@
+Account,Tradedate,Long,Short,FutOpt,Exchange,Contract,ContractMonth,Contractyear,StrikePrice,Price,SettPrice,Currency,UnrealisedPL,TradeNo,"BUY/Sell
+1=BUY
+0=SELL
+","SubType
+P=Put
+C=Call",Commodity,Commission,Option Delta,Firm/Office,"as-of-date
+(mm/dd/yyyy)"

@@ -1,0 +1,8 @@
+Account,Tradedate,Long,Short,FutOpt,Exchange,Contract,ContractMonth,Contractyear,StrikePrice,Price,SettPrice,Currency,UnrealisedPL,TradeNo,"BUY/Sell
+1=BUY
+0=SELL
+","SubType
+P=Put
+C=Call",Commodity,Commission,Option Delta,Firm/Office,"as-of-date
+(mm/dd/yyyy)"
+61188803,2018-02-28,500,0,F,DCE,1805,5,2018,,1817.6000000,1828.0000000,CNY,"52,000.00",,,,C,,,Shanghai Bunge,02/28/2018

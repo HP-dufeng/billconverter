@@ -13,6 +13,7 @@ import (
 func RetriveBillContent(filepath string) (string, error) {
 	var content string
 	f, err := os.Open(filepath)
+	defer f.Close()
 	if err == nil {
 		ts := simplifiedchinese.GBK.NewDecoder()
 		r := transform.NewReader(f, ts)

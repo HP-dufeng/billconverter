@@ -2,8 +2,8 @@
 // The core logic is in this file: worker.go
 // Logic Description:
 // 		input ==> convert ==> output
-// input: read all bill files from src folder
-// convert: extract the segments of [Trade Confirmation] ...
+// input: read bill file content from src folder
+// convert: extract the segments of [Trade Confirmation], [Gathered Open Positions], [Financial Situation] ...
 // output: write segments into csv file
 package main
 

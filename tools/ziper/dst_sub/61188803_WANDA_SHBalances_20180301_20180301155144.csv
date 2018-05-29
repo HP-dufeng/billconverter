@@ -1,0 +1,3 @@
+Account,Currency,BalanceBf,Deposit,Withdrawal,OptionPremium,DeliveryProceed,RealisedPL,Commission,Interest,Others,BalanceCf,UnrealisedPL,Equity,NetOptionValue,EligCollateral,"as-of-date
+mm/dd/yyyy"
+61188803,CNY,Opening,,-5000000.00,,,Opening - Closing,340.00,,,Closing,0.00,3183850.00,,,02/28/2018

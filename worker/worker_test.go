@@ -1,9 +1,11 @@
 package worker
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/transform"
@@ -155,27 +157,39 @@ func init() {
 }
 
 func TestProcess(t *testing.T) {
-	src := "./"
-	destination := "./"
-	filename := "_test.txt"
-	filepath := src + "/" + filename
+	temp := fmt.Sprintf("./_test_%v", time.Now().Unix())
+	src := temp + "/src"
+	destination := temp + "/dst"
 
-	f, _ := os.Create(filepath)
+	srcFilename := "_test.txt"
+	srcFilepath := src + "/" + srcFilename
+
+	os.Mkdir(temp, 0777)
+	defer os.RemoveAll(temp)
+	os.Mkdir(src, 0777)
+	os.Mkdir(destination, 0777)
+
+	f, err := os.Create(srcFilepath)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 	defer f.Close()
-	defer os.Remove(filepath)
+
 	ts := simplifiedchinese.GBK.NewEncoder()
 	w := transform.NewWriter(f, ts)
 	w.Write([]byte(content))
+	defer w.Close()
 
-	s, _ := process(filename, src, destination)
-	defer os.Remove(destination + "/" + s)
+	s, _ := process(srcFilename, src, destination)
 
-	if len(s) <= 0 {
-		t.Errorf("Expected csv file created, but not")
+	if len(s) != 3 {
+		t.Errorf("Expected 3 files has been generated, but get %v", len(s))
 	}
 
-	if !strings.Contains(s, "61188803") {
-		t.Errorf("Expected csv file name contains '61188803', but not")
+	if !strings.Contains(s[0], "61188803") ||
+		!strings.Contains(s[1], "61188803") ||
+		!strings.Contains(s[2], "61188803") {
+		t.Errorf("Expected created file name contains account no: 61188803, but not")
 	}
-
 }
